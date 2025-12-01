@@ -1,0 +1,59 @@
+h1 {
+    color: rgb(255, 85, 0);
+    font-size: 5.5em; /* valeur relative */
+    text-align: center;
+}
+
+.square-class {
+    color: #000000;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border-style: solid; */
+    background-color: skyblue;
+    border-radius: 20px;
+    /* box-shadow: 0.5em 0.5em 0.8em rgba(0, 0, 0, 0.5); */
+    aspect-ratio: 1/1;
+    width: 4.5em;
+    margin: auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 9.5em); /* 4 colonnes */
+    grid-template-rows: repeat(4, 9.5em);
+    gap: 0.5em; /* espace entre les carrés */
+    justify-content: center;
+    background-color: lightgray;
+    width: fit-content;
+    margin: auto;
+    padding: 0.5em;
+    border-radius: 20px;
+}
+
+.button {
+    border: none;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 85, 0);
+    padding: 15px 32px;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.0em;
+    margin: auto;
+    cursor: pointer;
+    margin-top: 100px;
+}
+
+.merge-animation {
+  animation: pop 0.3s ease;
+  background-color: #ee7946; /* jaune flash */
+}
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
