@@ -1,59 +1,100 @@
-h1 {
-    color: rgb(255, 85, 0);
-    font-size: 5.5em; /* valeur relative */
-    text-align: center;
+
+body {
+  font-family: 'VT323', monospace;
+}
+
+.title {
+  font-size: 150px;
+  color: #00FFFF;
+  text-shadow: 0 0 5px #FF00FF, 0 0 10px #00FFFF;
+  text-align: center;
+}
+
+img {
+  display: block;
+  margin: auto;
+  width: 50%;
 }
 
 .square-class {
-    color: #000000;
-    font-size: 2em;
+    font-size: 40px;
+    border-radius: 8px;
+    color: #00FFFF;
+    /* text-shadow: 0 0 5px #00FFFF; */
+    box-shadow: 0 0 10px #00FFFF, 0 0 20px #FF00FF;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border-style: solid; */
-    background-color: skyblue;
-    border-radius: 20px;
-    /* box-shadow: 0.5em 0.5em 0.8em rgba(0, 0, 0, 0.5); */
-    aspect-ratio: 1/1;
-    width: 4.5em;
-    margin: auto;
+    font-family: 'Press Start 2P', monospace;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(4, 9.5em); /* 4 colonnes */
+    grid-template-columns: repeat(4, 9.5em);
     grid-template-rows: repeat(4, 9.5em);
-    gap: 0.5em; /* espace entre les carrés */
+    gap: 1em;
     justify-content: center;
-    background-color: lightgray;
+    background-color: transparent;
     width: fit-content;
     margin: auto;
-    padding: 0.5em;
+    padding: 1em;
     border-radius: 20px;
+    border: 2px solid #FF00FF;
+    box-shadow: 0 0 20px #FF00FF, 0 0 10px #00FFFF;
 }
 
 .button {
-    border: none;
-    color: rgb(0, 0, 0);
-    background-color: rgb(255, 85, 0);
-    padding: 15px 32px;
-    border-radius: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.0em;
-    margin: auto;
-    cursor: pointer;
-    margin-top: 100px;
+  flex: 1;
+  max-width: 290px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 2px solid #FF00FF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #FF00FF;
+  margin: 20px;
+  font-size: 44px;
+  text-transform: uppercase;
+  color: #00FFFF;
+  background-color: transparent;
+  font-family: 'VT323', monospace;
 }
 
-.merge-animation {
-  animation: pop 0.3s ease;
-  background-color: #ee7946; /* jaune flash */
+.scores {
+  display: flex;
+  gap: 30px;
+  margin: 80px;
+  justify-content: center;
 }
 
-@keyframes pop {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.2); }
-  100% { transform: scale(1); }
+.score-box {
+  flex: 1;
+  max-width: 290px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 2px solid #FF00FF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #FF00FF;
+  color: #00FFFF;
+  margin: 20px;
+}
+
+.label {
+  font-size: 54px;
+  text-transform: uppercase;
+  color: #FF00FF;
+}
+
+.value {
+  font-size: 44px;
+  color: #00FFFF;
 }

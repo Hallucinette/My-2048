@@ -5,6 +5,8 @@ let board = [
   [0,0,0,0]
 ];
 
+let bestScore = 0;
+let currentScore = 0;
 
 function addNumber() {
     let emptySquares = [];
@@ -38,52 +40,82 @@ function updateGrid() {
     }
 }
 
+function animateCell(index) {
+  const squares = document.querySelectorAll('.square-class');
+  const el = squares[index];
+    if (!el)
+        return;
+        el.animate(
+        [
+            { transform: 'scale(1)', backgroundColor: '#cdc1b4' },
+            { transform: 'scale(1.2)', backgroundColor: '#FFD700' },
+            { transform: 'scale(1)', backgroundColor: '#cdc1b4' }
+        ],
+        { duration: 300, easing: 'ease' }
+    );
+}
+
 function moveRight() {
     let isChanged = false;
-    for (let i = 0; i < board.length; i++) {
-        let row = board[i].filter(nb => nb !== 0);
-        console.log("Ligne", i, "après compactage :", row);
-        for (let j = row.length - 1; j > 0; j--) {
-            if (row[j] === row[j - 1]) {
-                row[j - 1] *= 2;
-                row[j] = 0;
+    const n = board.length;
+
+    for (let i = 0; i < n; i++) {
+        const vals = board[i].filter(v => v !== 0);
+        const result = Array(n).fill(0);
+
+        let dest = n - 1;
+        let j = vals.length - 1;
+
+        while (j >= 0) {
+            if (j > 0 && vals[j] === vals[j - 1]) {
+                const merged = vals[j] * 2;
+                result[dest] = merged;
+                animateCell(i * n + dest);
+                dest--;
+                j -= 2;
+            } else {
+                result[dest] = vals[j];
+                dest--;
                 j--;
             }
         }
 
-        row = row.filter(val => val !== 0);
-
-        while (row.length < board.length) {
-            row.unshift(0);
-        }
-        if (board[i].toString() !== row.toString()) {
-            board[i] = row;
+        if (board[i].toString() !== result.toString()) {
+            board[i] = result;
             isChanged = true;
         }
     }
-    return isChanged;
+
+  return isChanged;
 }
 
 function moveLeft() {
     let isChanged = false;
-    for (let i = 0; i < board.length; i++) {
-        let row = board[i].filter(nb => nb !== 0);
-        console.log("Ligne", i, "après compactage :", row);
-        for (let j = 0; j < row.length - 1; j++) {
-            if (row[j] === row[j + 1]) {
-                row[j + 1] *= 2;
-                row[j] = 0;
+    const n = board.length;
+
+    for (let i = 0; i < n; i++) {
+        const vals = board[i].filter(v => v !== 0);
+        const result = Array(n).fill(0);
+
+        let dest = 0;
+        let j = 0;
+
+        while (j < vals.length) {
+            if (j < vals.length - 1 && vals[j] === vals[j + 1]) {
+                const merged = vals[j] * 2;
+                result[dest] = merged;
+                animateCell(i * n + dest);
+                dest++;
+                j += 2;
+            } else {
+                result[dest] = vals[j];
+                dest++;
                 j++;
             }
         }
 
-        row = row.filter(val => val !== 0);
-
-        while (row.length < board.length) {
-            row.push(0);
-        }
-        if (board[i].toString() !== row.toString()) {
-            board[i] = row;
+        if (board[i].toString() !== result.toString()) {
+            board[i] = result;
             isChanged = true;
         }
     }
@@ -92,32 +124,35 @@ function moveLeft() {
 
 function moveUp() {
     let isChanged = false;
-    for (let col = 0; col < board.length; col++) {
-        let column = [];
-        for (let row = 0; row < board.length; row++) {
-            if (board[row][col] !== 0) {
-                column.push(board[row][col]);
-            }
+    const n = board.length;
+
+    for (let col = 0; col < n; col++) {
+        const vals = [];
+        for (let row = 0; row < n; row++) {
+            if (board[row][col] !== 0) vals.push(board[row][col]);
         }
 
-        for (let j = 0; j < column.length - 1; j++) {
-            if (column[j] === column[j + 1]) {
-                column[j] *= 2;
-                column[j + 1] = 0;
-                isChanged = true;
+        const result = Array(n).fill(0);
+        let dest = 0;
+        let j = 0;
+
+        while (j < vals.length) {
+            if (j < vals.length - 1 && vals[j] === vals[j + 1]) {
+                const merged = vals[j] * 2;
+                result[dest] = merged;
+                animateCell(dest * n + col);
+                dest++;
+                j += 2;
+            } else {
+                result[dest] = vals[j];
+                dest++;
                 j++;
             }
         }
 
-        column = column.filter(val => val !== 0);
-
-        while (column.length < board.length) {
-            column.push(0);
-        }
-
-        for (let row = 0; row < board.length; row++) {
-            if (board[row][col] !== column[row]) {
-                board[row][col] = column[row];
+        for (let row = 0; row < n; row++) {
+            if (board[row][col] !== result[row]) {
+                board[row][col] = result[row];
                 isChanged = true;
             }
         }
@@ -127,32 +162,35 @@ function moveUp() {
 
 function moveDown() {
     let isChanged = false;
-    for (let col = 0; col < board.length; col++) {
-        let column = [];
-        for (let row = 0; row < board.length; row++) {
-            if (board[row][col] !== 0) {
-                column.push(board[row][col]);
-            }
+    const n = board.length;
+
+    for (let col = 0; col < n; col++) {
+        const vals = [];
+        for (let row = 0; row < n; row++) {
+            if (board[row][col] !== 0) vals.push(board[row][col]);
         }
 
-        for (let j = column.length - 1; j > 0; j--) {
-            if (column[j] === column[j - 1]) {
-                column[j] *= 2;
-                column[j - 1] = 0;
-                isChanged = true;
+        const result = Array(n).fill(0);
+        let dest = n - 1;
+        let j = vals.length - 1;
+
+        while (j >= 0) {
+            if (j > 0 && vals[j] === vals[j - 1]) {
+                const merged = vals[j] * 2;
+                result[dest] = merged;
+                animateCell(dest * n + col);
+                dest--;
+                j -= 2;
+            } else {
+                result[dest] = vals[j];
+                dest--;
                 j--;
             }
         }
 
-        column = column.filter(val => val !== 0);
-
-        while (column.length < board.length) {
-            column.unshift(0);
-        }
-
-        for (let row = 0; row < board.length; row++) {
-            if (board[row][col] !== column[row]) {
-                board[row][col] = column[row];
+        for (let row = 0; row < n; row++) {
+            if (board[row][col] !== result[row]) {
+                board[row][col] = result[row];
                 isChanged = true;
             }
         }
@@ -173,18 +211,22 @@ function checkGame() {
 }
 
 function checkScore() {
-    let bestScore = 0;
-
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board.length; j++) {
             if (board[i][j] > bestScore) {
                 bestScore = board[i][j];
             }
+            if (board[i][j] > currentScore) {
+                currentScore = board[i][j];
+            }
         }
     }
 
-    const messageElement = document.getElementById("score");
-    messageElement.textContent = "Best score : " + bestScore.toString();
+    const msgBest = document.getElementById("best");
+    msgBest.textContent = bestScore.toString();
+
+    const msgCurrent = document.getElementById("score");
+    msgCurrent.textContent = currentScore.toString();
 }
 
 document.addEventListener('keydown', (event) => {
@@ -203,9 +245,6 @@ document.addEventListener('keydown', (event) => {
         checkScore();
         updateGrid();
     }
-});
-
-document.addEventListener("keydown", function(event) {
     checkGame();
 });
 
@@ -234,9 +273,11 @@ function isFinish() {
 }
 
 function startGame() {
+    currentScore = 0;
     addNumber();
     addNumber();
     updateGrid();
+    checkScore()
 }
 
 function resetGame() {
@@ -260,17 +301,21 @@ let newBoard = [
     board = newBoard;
     updateGrid();
     checkGame();
+    checkScore()
 }
 
 function winGame() {
-let newBoard = [
-    [2048,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0]
-    ];
+    let newBoard = [
+        [2048,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0]
+        ];
+
     board = newBoard;
     updateGrid();
+    checkScore()
+    setTimeout(100);
     const messageElement = document.getElementById("message");
     messageElement.textContent = "You WIN!";
     alert("You WIN!");
