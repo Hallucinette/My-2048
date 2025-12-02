@@ -10,17 +10,17 @@ body {
   text-align: center;
 }
 
-img {
+.img {
   display: block;
   margin: auto;
-  width: 50%;
+  width: 100%;
+  max-width: 700px;
 }
 
-.square-class {
+.cell {
     font-size: 40px;
     border-radius: 8px;
     color: #00FFFF;
-    /* text-shadow: 0 0 5px #00FFFF; */
     box-shadow: 0 0 10px #00FFFF, 0 0 20px #FF00FF;
     text-align: center;
     transition: all 0.2s ease-in-out;
@@ -65,14 +65,39 @@ img {
   font-family: 'VT323', monospace;
 }
 
-.scores {
+.button_powerUp {
+  flex: 1;
+  max-width: 290px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 2px solid #FF00FF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #FF00FF;
+  margin: 20px;
+  font-size: 44px;
+  text-transform: uppercase;
+  color: #00FFFF;
+  background-color: #FF00FF;
+  font-family: 'VT323', monospace;
+}
+
+.disabledbtn {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.buttons_row {
   display: flex;
   gap: 30px;
   margin: 80px;
   justify-content: center;
 }
 
-.score-box {
+.score_box {
   flex: 1;
   max-width: 290px;
   height: 80px;

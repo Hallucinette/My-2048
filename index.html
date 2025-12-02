@@ -5,56 +5,75 @@
         <meta charset="utf-8">
         <title>My 2048</title>
         <link href="css/style.css" rel="stylesheet">
+        <link href="css/animation.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </head>
+
+    <!-- <body> -->
     <body style ="background:radial-gradient(circle at center, #1A1A2E 0%, #0D0D1A 100%)">
-        <!-- <body> -->
         <div>
-        <img class = "img" src="title.png" alt="2048">
-        <!-- score -->
-        <div class="scores">
-            <div class="score-box">
-                <div class="label">Score</div>
-                <div id="score" class="value">0</div>
+            <img class = "img" src="assets/title.png" alt="2048">
+            <!-- score -->
+            <div class="buttons_row">
+                <div class="score_box">
+                    <div class="label">Score</div>
+                    <div id="score" class="value">0</div>
+                </div>
+                <div class="score_box">
+                    <div class="label">Best</div>
+                    <div id = "best" class="value">0</div>
+                </div>
             </div>
-            <div class="score-box">
-                <div class="label">Best</div>
-                <div id = "best" class="value">0</div>
+
+            <!-- grind -->
+            <div class = "buttons_row">
+                <div class="grid">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                </div>
             </div>
-        </div>
 
-        <!-- final de score -->
-         <!-- grind -->
-        <div class="grid">
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
-            <div class="square-class"></div>
+            <!-- buttons -->
+            <div class="buttons_row">
+                <div><button class="button" onclick="resetGame()">Reset game</button></div>
+                <div><button class="button" onclick="lostGame()">lost game</button></div>
+                <div><button class="button" onclick="winGame()">win game</button></div>
+            </div>
+            <div class="buttons_row">
+                <div><button class="button_powerUp" onclick="withoutLimit(this)">
+                    <img src="assets/infinity.png" alt="inf" width="50px"></button></div>
+                <div><button class="button_powerUp" onclick="previousMove()">
+                    <img src="assets/back.png" alt="inf" width="50px"></button></div>
+            </div>
+            <!-- message -->
+           <p id="message" class="shadow-dance-text"></p>
         </div>
-        <script src="js/script.js"></script>
-
-        <p id="message"></p>
-        <!-- buttons -->
-        <div class="scores">
-            <div><button class="button" onclick="resetGame()">Reset game</button></div>
-            <div><button class="button" onclick="lostGame()">lost game</button></div>
-            <div><button class="button" onclick="winGame()">win game</button></div>
-        </div>
-
-        </body>
-    </div>
 
     </body>
+        <!-- animation de victoire -->
+        <div id="win-animation"></div>
+
+        <!-- Scripts -->
+        <script src="js/script.js"></script>
+        <script src="js/mouvements.js"></script>
+        <script src="js/debug.js"></script>
+        <script src="js/animate.js"></script>
+
 </html>
+
+<!-- //rescale numero dentro de los tiles -->

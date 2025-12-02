@@ -7,6 +7,14 @@ let board = [
 
 let bestScore = 0;
 let currentScore = 0;
+let isLimited = true;
+let previousBoard = board;
+let previousBestScore = bestScore;
+let previousCurrentScore = currentScore;
+
+function cloneBoard(b) {
+    return b.map(row => [...row]);
+}
 
 function addNumber() {
     let emptySquares = [];
@@ -27,7 +35,7 @@ function addNumber() {
 }
 
 function updateGrid() {
-    const squares = document.querySelectorAll('.square-class');
+    const squares = document.querySelectorAll('.cell');
     let index = 0;
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board.length; j++) {
@@ -40,177 +48,24 @@ function updateGrid() {
     }
 }
 
-function animateCell(index) {
-  const squares = document.querySelectorAll('.square-class');
-  const el = squares[index];
-    if (!el)
-        return;
-        el.animate(
-        [
-            { transform: 'scale(1)', backgroundColor: '#cdc1b4' },
-            { transform: 'scale(1.2)', backgroundColor: '#FFD700' },
-            { transform: 'scale(1)', backgroundColor: '#cdc1b4' }
-        ],
-        { duration: 300, easing: 'ease' }
-    );
-}
+function notifyFinished() {
+    let isLosted = isLost();
+    let isWined = isWin();
+    const msg = document.getElementById("message");
+    msg.textContent = "";
 
-function moveRight() {
-    let isChanged = false;
-    const n = board.length;
-
-    for (let i = 0; i < n; i++) {
-        const vals = board[i].filter(v => v !== 0);
-        const result = Array(n).fill(0);
-
-        let dest = n - 1;
-        let j = vals.length - 1;
-
-        while (j >= 0) {
-            if (j > 0 && vals[j] === vals[j - 1]) {
-                const merged = vals[j] * 2;
-                result[dest] = merged;
-                animateCell(i * n + dest);
-                dest--;
-                j -= 2;
-            } else {
-                result[dest] = vals[j];
-                dest--;
-                j--;
-            }
-        }
-
-        if (board[i].toString() !== result.toString()) {
-            board[i] = result;
-            isChanged = true;
-        }
-    }
-
-  return isChanged;
-}
-
-function moveLeft() {
-    let isChanged = false;
-    const n = board.length;
-
-    for (let i = 0; i < n; i++) {
-        const vals = board[i].filter(v => v !== 0);
-        const result = Array(n).fill(0);
-
-        let dest = 0;
-        let j = 0;
-
-        while (j < vals.length) {
-            if (j < vals.length - 1 && vals[j] === vals[j + 1]) {
-                const merged = vals[j] * 2;
-                result[dest] = merged;
-                animateCell(i * n + dest);
-                dest++;
-                j += 2;
-            } else {
-                result[dest] = vals[j];
-                dest++;
-                j++;
-            }
-        }
-
-        if (board[i].toString() !== result.toString()) {
-            board[i] = result;
-            isChanged = true;
-        }
-    }
-    return isChanged;
-}
-
-function moveUp() {
-    let isChanged = false;
-    const n = board.length;
-
-    for (let col = 0; col < n; col++) {
-        const vals = [];
-        for (let row = 0; row < n; row++) {
-            if (board[row][col] !== 0) vals.push(board[row][col]);
-        }
-
-        const result = Array(n).fill(0);
-        let dest = 0;
-        let j = 0;
-
-        while (j < vals.length) {
-            if (j < vals.length - 1 && vals[j] === vals[j + 1]) {
-                const merged = vals[j] * 2;
-                result[dest] = merged;
-                animateCell(dest * n + col);
-                dest++;
-                j += 2;
-            } else {
-                result[dest] = vals[j];
-                dest++;
-                j++;
-            }
-        }
-
-        for (let row = 0; row < n; row++) {
-            if (board[row][col] !== result[row]) {
-                board[row][col] = result[row];
-                isChanged = true;
-            }
-        }
-    }
-    return isChanged;
-}
-
-function moveDown() {
-    let isChanged = false;
-    const n = board.length;
-
-    for (let col = 0; col < n; col++) {
-        const vals = [];
-        for (let row = 0; row < n; row++) {
-            if (board[row][col] !== 0) vals.push(board[row][col]);
-        }
-
-        const result = Array(n).fill(0);
-        let dest = n - 1;
-        let j = vals.length - 1;
-
-        while (j >= 0) {
-            if (j > 0 && vals[j] === vals[j - 1]) {
-                const merged = vals[j] * 2;
-                result[dest] = merged;
-                animateCell(dest * n + col);
-                dest--;
-                j -= 2;
-            } else {
-                result[dest] = vals[j];
-                dest--;
-                j--;
-            }
-        }
-
-        for (let row = 0; row < n; row++) {
-            if (board[row][col] !== result[row]) {
-                board[row][col] = result[row];
-                isChanged = true;
-            }
-        }
-    }
-    return isChanged;
-}
-
-function checkGame() {
-    let isFinished = isFinish();
-    const messageElement = document.getElementById("message");
-
-    if (isFinished) {
-        messageElement.textContent = "You lost!";
+    if (isLosted) {
+        msg.textContent = "You lost!";
         alert("You lost!");
-    } else {
-        messageElement.textContent = "";
+    }
+    if (isWined) {
+        msg.textContent = "You Win!";
+        showWinAnimation();
+        alert("You Win !");
     }
 }
 
-function checkScore() {
+function updateScore() {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board.length; j++) {
             if (board[i][j] > bestScore) {
@@ -231,6 +86,7 @@ function checkScore() {
 
 document.addEventListener('keydown', (event) => {
     let isChanged = false;
+    previousBoard = cloneBoard(board);
     if (event.key === 'ArrowRight') {
         isChanged = moveRight()
     } else if (event.key === 'ArrowLeft') {
@@ -242,13 +98,13 @@ document.addEventListener('keydown', (event) => {
     }
     if (isChanged) {
         addNumber();
-        checkScore();
+        updateScore();
         updateGrid();
     }
-    checkGame();
+    notifyFinished();
 });
 
-function isFinish() {
+function isLost() {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board.length; j++) {
             if (board[i][j] === 0) {
@@ -268,8 +124,55 @@ function isFinish() {
             }
         }
     }
-
     return true;
+}
+
+function isWin() {
+    if (isLimited) {
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board.length; j++) {
+                if (board[i][j] === 2048) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+function resetGame() {
+let newBoard = [
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0]
+    ];
+    board = newBoard;
+    isLimited = false;
+    notifyFinished();
+    startGame();
+}
+
+function withoutLimit(btn) {
+    if (isLimited === true) {
+        isLimited = false;
+        btn.classList.add('disabledbtn');
+    }
+    else {
+        isLimited = true;
+        btn.classList.remove('disabledbtn');
+    }
+}
+
+function previousMove() {
+    if (previousBoard) {
+        board = cloneBoard(previousBoard);
+        previousBoard = null;
+        bestScore = previousBestScore;
+        currentScore = previousCurrentScore;
+        updateGrid();
+        updateScore()
+    }
 }
 
 function startGame() {
@@ -277,48 +180,7 @@ function startGame() {
     addNumber();
     addNumber();
     updateGrid();
-    checkScore()
-}
-
-function resetGame() {
-let newBoard = [
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0]
-    ];
-    board = newBoard;
-    startGame();
-}
-
-function lostGame() {
-let newBoard = [
-    [2,4,16,32],
-    [4,16,32,2],
-    [16,32,2,4],
-    [32,2,4,16]
-    ];
-    board = newBoard;
-    updateGrid();
-    checkGame();
-    checkScore()
-}
-
-function winGame() {
-    let newBoard = [
-        [2048,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0]
-        ];
-
-    board = newBoard;
-    updateGrid();
-    checkScore()
-    setTimeout(100);
-    const messageElement = document.getElementById("message");
-    messageElement.textContent = "You WIN!";
-    alert("You WIN!");
+    updateScore()
 }
 
 startGame();
