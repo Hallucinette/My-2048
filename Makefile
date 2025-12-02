@@ -1,4 +1,4 @@
-.PHONY: all build up down restart logs clean re
+.PHONY: all build up down logs clean re
 
 all: up
 
