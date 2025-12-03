@@ -1,6 +1,6 @@
 # 2048 Game
 
-A recreation of the classic puzzle game **2048**, built entirely with **HTML, CSS, and pure JavaScript**.  
+A recreation of the classic puzzle game **2048**, built entirely with **HTML, CSS, and pure JavaScript**.
 This project was developed as part of the Globant Piscine Project 0.
 
 ---
@@ -38,7 +38,7 @@ Key features:
    docker-compose up --build
 
 4. Open your browser and navigate to:
-   http://localhost:3000
+   http://localhost:8080
 
 ### 🎮 Controls
 ⬆️ Up Arrow: Move tiles up
@@ -60,4 +60,14 @@ Once the mandatory requirements are complete, you can extend the game with:
 Competitive or time trial mode.
 
 Accessibility improvements (high-contrast mode, ARIA attributes).
+
+Personal experiment: tested a confetti animation using Lottie purely out of
+curiosity, even though the assignment specifies no external libraries.
+
+### Planned Improvements
+Dark mode: implement a dark theme using predefined CSS variables to simplify
+color management and ensure maintainability.
+
+Responsive design: enhance the adaptability of the page across different screen
+sizes and devices, optimizing layout and visual elements.
 
